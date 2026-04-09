@@ -1,90 +1,96 @@
-# Obsidian Sample Plugin
+# Work Hours Stats
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+Track your day job without leaving Obsidian. **Work Hours Stats** adds a dedicated right-pane view with a heatmap calendar, quick logging popovers, and a dashboard that compares actual vs expected hours.
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+> 這是一個工時紀錄插件，可在 Obsidian 內用月曆熱力圖記錄每天工時、檢視累計進度，並快速填滿或清空整個月份。
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open modal (simple)" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+## Preview
 
-## First time developing plugins?
+![Work Hours view](./images/work-hours-view.png "Work Hours view screenshot")
 
-Quick starting guide for new plugin devs:
+## Features
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+- **Monthly heatmap** – Color-coded grid for the active month. Each square shows the date plus logged hours.
+- **Quick popover editor** – Click a day to set 0–8 h or 8+ h, or clear the entry with one tap.
+- **Ribbon + command** – A clock icon in the ribbon and `Open work stats` command open the view anywhere.
+- **Dashboard** – See `This month` totals, expected hours, slack time, and utilization percentage at a glance.
+- **Bulk actions** – Fill an entire month using your configured schedule or wipe it clean via confirmation modals.
+- **Configurable schedule** – Settings tab lets you define working days per week (0–7) and hours per day (1–24). These values drive expected totals and the fill-month action.
+- **Live updates** – Whenever you save data, listening views refresh automatically via the plugin’s observer system.
 
-## Releasing new releases
+## Installation
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+### Manual install (users)
+1. Download the latest `main.js`, `manifest.json`, and `styles.css` from the Releases page.
+2. Copy them into `<Vault>/.obsidian/plugins/work-hours-stats/` (create the folder if missing).
+3. Reload Obsidian and enable **Work Hours Stats** in **Settings → Community plugins**.
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
-
-## Adding your plugin to the community plugin list
-
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- This project already has eslint preconfigured, you can invoke a check by running`npm run lint`
-- Together with a custom eslint [plugin](https://github.com/obsidianmd/eslint-plugin) for Obsidan specific code guidelines.
-- A GitHub action is preconfigured to automatically lint every commit on all branches.
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
+### Dev setup
+```bash
+git clone <repo>
+cd obsidian-work-stats-plugin
+npm install
+npm run dev   # watch mode (esbuild + HMR reload through Obsidian)
 ```
+While developing, keep the plugin enabled inside your test vault. Run `npm run build` before releasing—this executes `tsc` for type checks and `esbuild` for the production bundle.
 
-If you have multiple URLs, you can also do:
+## Usage
 
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
+1. Open the view through the ribbon clock icon or by running `Open work stats` from the command palette.
+2. Navigate months with `‹`, `Today`, `›` buttons. Today’s date shows a dot marker.
+3. Click a day square to open the popover, choose an hour value, and hit **Save**. Select **Clear** to log 0 h quickly.
+4. Use the action buttons beneath the grid:
+   - **Fill expected hours** – Fills each day in the visible month based on working days per week × hours per day. Non-working days receive 0 h.
+   - **Clear this month** – Deletes all records for the visible month after confirmation.
+   - **Open plugin settings** – Shortcut to the settings tab for schedule tweaks.
 
-## API Documentation
+### Settings
+- **Working days per week** – Integer 0–7. Determines which weekdays (Mon→Sun order) count as work days.
+- **Hours per working day** – Integer 1–24. Target hours used for expected totals and fill-month action.
 
-See https://docs.obsidian.md
+## Architecture Overview
+
+- `src/main.ts` – Plugin lifecycle, data persistence (settings + records), command registration, and view management.
+- `src/workStats.ts` – Pure helpers for clamping hours, generating date keys, calculating totals and expected hours.
+- `src/workStatsView.ts` – UI layer built atop `ItemView`, handles rendering, heatmap layout, popovers, modals, and action buttons.
+- `src/settings.ts` – Obsidian setting tab implementation.
+- `styles.css` – Visual design for the view, popovers, dashboard, and modals.
+
+Data is persisted via `this.loadData()` / `this.saveData()`, so uninstalling the plugin removes the stored hours.
+
+## Release Workflow
+
+1. Update `manifest.json` and `package.json` to the new semantic version (e.g., `1.2.0`).
+2. Add the mapping to `versions.json` (`"1.2.0": "1.5.0"`).
+3. Run `npm run build` to generate the release-ready `main.js` and `styles.css`.
+4. Test in a vault by copying the three release files and reloading Obsidian.
+5. Create a Git tag with the exact version (no `v` prefix) and push it.
+6. Draft a GitHub release using the same version as the tag. Attach `manifest.json`, `main.js`, `styles.css`, and summarize changes.
+7. To publish on the community plugin list, follow the [official guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines) and submit a PR to [`obsidian-releases`](https://github.com/obsidianmd/obsidian-releases).
+
+> Tip: `npm version patch|minor|major` can automate Steps 1–5 (version bump + tag + versions.json entry). Review the generated commit before pushing.
+
+## FAQ
+
+**Q: Can I log half-hours?** Currently no. Entries are rounded to integers (0–8 or 8+) to keep the UI fast. Note fractional work in a separate note if needed.
+
+**Q: Why does it show “8+ h”?** When a record is 9 or above, the cell marks it as overtime with a special color and `8+` label.
+
+**Q: How are expected hours calculated?** For each day in the month, if its weekday is within your working-days set, it contributes `hoursPerDay` to the expected tally. This number drives the dashboard’s slack and utilization.
+
+**Q: Is it mobile-friendly?** Yes. The view is built with standard Obsidian APIs and should work on mobile as long as the plugin is enabled.
+
+## Contributing
+
+Pull requests are welcome! Please:
+- Keep `main.ts` minimal—place logic inside dedicated modules.
+- Run `npm run lint` and `npm run build` before opening a PR.
+- Use Obsidian’s `this.register*` helpers so views clean up listeners when unloaded.
+
+## License
+
+0BSD. The plugin follows Obsidian’s community plugin policies; do not redistribute with proprietary assets or telemetry without explicit consent.
+
+---
+
+Enjoy watching your work rhythm light up the heatmap. Share ideas or feedback through issues! 
