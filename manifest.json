@@ -1,9 +1,9 @@
 {
 	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"name": "Work Hours Stats",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
+	"description": "Track daily work hours and visualize month totals with a heatmap view.",
 	"author": "Obsidian",
 	"authorUrl": "https://obsidian.md",
 	"fundingUrl": "https://obsidian.md/pricing",
