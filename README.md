@@ -2,7 +2,7 @@
 
 Track your day job without leaving Obsidian. **Work Hours Stats** adds a dedicated right-pane view with a heatmap calendar, quick logging popovers, and a dashboard that compares actual vs expected hours.
 
-> 這是一個工時紀錄插件，可在 Obsidian 內用月曆熱力圖記錄每天工時、檢視累計進度，並快速填滿或清空整個月份。
+> This work-hours plugin lets you capture daily time in Obsidian via a calendar heatmap, review cumulative progress, and instantly fill or clear an entire month.
 
 ## Preview
 
