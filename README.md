@@ -70,26 +70,9 @@ Data is persisted via `this.loadData()` / `this.saveData()`, so uninstalling the
 
 > Tip: `npm version patch|minor|major` can automate Steps 1–5 (version bump + tag + versions.json entry). Review the generated commit before pushing.
 
-## FAQ
-
-**Q: Can I log half-hours?** Currently no. Entries are rounded to integers (0–8 or 8+) to keep the UI fast. Note fractional work in a separate note if needed.
-
-**Q: Why does it show “8+ h”?** When a record is 9 or above, the cell marks it as overtime with a special color and `8+` label.
-
-**Q: How are expected hours calculated?** For each day in the month, if its weekday is within your working-days set, it contributes `hoursPerDay` to the expected tally. This number drives the dashboard’s slack and utilization.
-
-**Q: Is it mobile-friendly?** Yes. The view is built with standard Obsidian APIs and should work on mobile as long as the plugin is enabled.
-
-## Contributing
-
-Pull requests are welcome! Please:
-- Keep `main.ts` minimal—place logic inside dedicated modules.
-- Run `npm run lint` and `npm run build` before opening a PR.
-- Use Obsidian’s `this.register*` helpers so views clean up listeners when unloaded.
-
 ## License
 
-0BSD. The plugin follows Obsidian’s community plugin policies; do not redistribute with proprietary assets or telemetry without explicit consent.
+MIT License © 2026 Nick Huang. Follow Obsidian’s community plugin policies and avoid bundling telemetry without consent.
 
 ---
 
