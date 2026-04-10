@@ -5,6 +5,14 @@
 
 ### Features
 
+* apply theme heatmap palette ([9db7f49](https://github.com/nick-jy-huang/obsidian-work-stats-hour-plugin/commit/9db7f49fe18b3524faac920a67cffd40d51080dd))
+* apply theme heatmap palette ([3807472](https://github.com/nick-jy-huang/obsidian-work-stats-hour-plugin/commit/380747238878d256c3223794ec3df595f7f3c390))
+
+## [1.1.0](https://github.com/nick-jy-huang/obsidian-work-stats-hour-plugin/compare/v1.0.0...v1.1.0) (2026-04-10)
+
+
+### Features
+
 * apply theme heatmap palette ([3807472](https://github.com/nick-jy-huang/obsidian-work-stats-hour-plugin/commit/380747238878d256c3223794ec3df595f7f3c390))
 
 ## 1.0.0 (2026-04-09)
