@@ -8,6 +8,18 @@ import {
   getExpectedMonthlyHours,
 } from "./workStats";
 
+const HOUR_HEAT_COLORS = [
+  "var(--work-heat-neutral, var(--background-modifier-border))",
+  "color-mix(in srgb, var(--color-accent) 20%, #ffffff)",
+  "color-mix(in srgb, var(--color-accent) 35%, #ffffff)",
+  "color-mix(in srgb, var(--color-accent) 50%, #ffffff)",
+  "color-mix(in srgb, var(--color-accent) 65%, var(--background-primary))",
+  "color-mix(in srgb, var(--color-accent) 80%, var(--background-secondary))",
+  "color-mix(in srgb, var(--color-accent) 90%, rgba(255, 255, 255, 0.05))",
+  "color-mix(in srgb, var(--color-accent) 95%, rgba(0, 0, 0, 0.1))",
+  "color-mix(in srgb, var(--color-accent) 100%, rgba(0, 0, 0, 0.25))",
+];
+
 export const VIEW_TYPE_WORK_STATS = "work-stats-view";
 
 export class WorkStatsView extends ItemView {
@@ -155,11 +167,11 @@ export class WorkStatsView extends ItemView {
     const legend = parent.createEl("div", { cls: "work-stats-legend" });
     legend.createEl("span", { text: "Cool" });
     const scale = legend.createEl("div", { cls: "work-stats-legend-scale" });
-    const stops = [0, 0.25, 0.5, 0.75, 1];
-    stops.forEach((stop) => {
+    const legendHours = [1, 2, 3, 5, 8];
+    legendHours.forEach((hours) => {
       const chip = scale.createEl("div", { cls: "work-stats-legend-chip" });
-      chip.style.setProperty("--legend-color", this.getHeatColor(stop));
-      chip.setAttribute("aria-label", `${Math.round(stop * 100)}% load`);
+      chip.style.setProperty("--legend-color", this.getColorForHours(hours));
+      chip.setAttribute("aria-label", `${hours}h`);
     });
     legend.createEl("span", { text: "Busy" });
   }
@@ -214,11 +226,9 @@ export class WorkStatsView extends ItemView {
     let displayRatio = ratio;
     let color: string | undefined;
     if (hasHours) {
+      color = this.getColorForHours(Math.min(8, hours));
       if (hours === 8) {
-        color = "hsl(20, 90%, 40%)";
-        displayRatio = 1.2;
-      } else {
-        color = this.getHeatColor(ratio);
+        displayRatio = 1.15;
       }
     }
     if (color) {
@@ -272,15 +282,9 @@ export class WorkStatsView extends ItemView {
     );
   }
 
-  private getHeatColor(ratio: number): string {
-    const clamped = Math.max(0, Math.min(1, ratio));
-    if (clamped === 0) {
-      return "var(--work-heat-neutral, var(--background-modifier-border))";
-    }
-    const hue = 115 - clamped * 115; // green to red
-    const saturation = 55 + clamped * 30;
-    const light = 78 - clamped * 30;
-    return `hsl(${hue}, ${saturation}%, ${light}%)`;
+  private getColorForHours(hours: number): string {
+    const index = Math.max(0, Math.min(8, Math.round(hours)));
+    return (HOUR_HEAT_COLORS[index] ?? HOUR_HEAT_COLORS[HOUR_HEAT_COLORS.length - 1]) as string;
   }
 
   private openPopover(cell: HTMLElement, date: Date) {
