@@ -3,7 +3,7 @@ name: Release Please
 on:
   push:
     branches:
-      - master
+      - main
 
 permissions:
   contents: write
@@ -13,8 +13,38 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: googleapis/release-please-action@v4
+      - id: release
+        uses: googleapis/release-please-action@v4
         with:
           release-type: node
           token: ${{ secrets.RELEASE_TOKEN }}
-          target-branch: master
+          target-branch: main
+
+      - name: Checkout
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: npm ci
+
+      - name: Build plugin bundle
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        run: npm run build
+
+      - name: Upload release assets
+        if: ${{ steps.release.outputs.release_created == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          assets=(manifest.json main.js)
+          if [ -f styles.css ]; then
+            assets+=(styles.css)
+          fi
+          gh release upload ${{ steps.release.outputs.tag_name }} "${assets[@]}" --clobber --repo "${{ github.repository }}"
