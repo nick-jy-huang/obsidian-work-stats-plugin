@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Work Hours Stats",
+	"id": "work-hour-stats",
+	"name": "Work Hour Stats",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Track daily work hours and visualize month totals with a heatmap view.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"author": "Nick Huang",
+	"authorUrl": "https://github.com/nick-jy-huang",
+	"fundingUrl": "https://github.com/nick-jy-huang",
 	"isDesktopOnly": false
 }
