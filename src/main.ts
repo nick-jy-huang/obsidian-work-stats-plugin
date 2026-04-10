@@ -9,6 +9,7 @@ import {
 	getAllowedWeekdays,
 } from "./workStats";
 
+// @ts-ignore
 interface PersistedData {
 	settings: MyPluginSettings;
 	records: WorkStatsData;
